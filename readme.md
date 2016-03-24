@@ -1,3 +1,9 @@
+#Laravel Blog  
+  
+  It is like 'Hello World', but just a little bit bigger  
+    
+    
+
 # Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
