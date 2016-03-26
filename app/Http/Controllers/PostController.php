@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Session;
 use App\Post;
 use Redirect;
+use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 
@@ -28,7 +29,6 @@ class PostController extends Controller
 	}
 
 	public function store(CreatePostRequest $request) {
-
 		$post = new Post();
 		$post->title = $request->input('title');
 		$post->body = $request->input('content');
