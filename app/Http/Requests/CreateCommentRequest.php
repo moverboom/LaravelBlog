@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Auth;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CreateCommentRequest extends Request
 {

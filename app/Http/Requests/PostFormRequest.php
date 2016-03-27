@@ -1,8 +1,8 @@
 <?php namespace App\Http\Requests;
 
-use Auth;
 use App\User;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostFormRequest extends Request {
 
@@ -13,8 +13,10 @@ class PostFormRequest extends Request {
      */
     public function authorize()
     {
-        //IMPLEMENT USER CHECK LATER
-        return true;
+        if(Auth::check()) {
+            return true;
+        }
+        return false;
     }
 
     /**

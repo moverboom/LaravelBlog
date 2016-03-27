@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Session;
-use Redirect;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 
 class UserController extends Controller
