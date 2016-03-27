@@ -31,7 +31,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/user/{id}/posts', 'UserController@getUserPosts')->where('id', '[0-9]+');
 
     //users comments
-    Route::get('/user/{id}/comments', 'CommentController@getUserComments')->where('id', '[0-9]+');
+    Route::get('/user/{id}/comments', 'UserController@getUserComments')->where('id', '[0-9]+');
 
     //store the new post
     Route::get('/post/create', 'PostController@create');

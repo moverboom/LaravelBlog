@@ -27,4 +27,8 @@ class User extends Authenticatable
     public function getPosts() {
         return $this->hasMany('App\Post', 'author_id', 'id');
     }
+
+    public function getComments() {
+        return $this->hasMany('App\Comment', 'from_user', 'id');
+    }
 }

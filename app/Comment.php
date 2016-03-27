@@ -23,4 +23,12 @@ class Comment extends Model
     protected $hidden = [
         'id',
     ];
+
+    public function getUser() {
+        return $this->hasOne('App\User', 'id', 'from_user');
+    }
+
+    public function getPost() {
+        return $this->hasOne('App\Post', 'id', 'on_post');
+    }
 }

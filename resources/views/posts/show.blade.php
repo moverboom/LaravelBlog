@@ -54,11 +54,14 @@
 				  		</div>
 			  		@endif
 			  		@if(!empty($post->getComments()))
-			  		<hr>
 					  	<!-- comments list group -->
 					  	<ul class="list-group">
 					  		@foreach($post->getComments->all() as $comment)
-					    		<li class="list-group-item">{{$comment->content}}</li>
+					    		<li class="list-group-item">
+					    			<a href="/user/{{ $comment->getUser->id }}" class="text-muted">{{ $comment->getUser->name }}</a>
+					    			<br>
+					    			{{ $comment->content }}
+					    		</li>
 					    	@endforeach
 					  	</ul>
 				  	@endif

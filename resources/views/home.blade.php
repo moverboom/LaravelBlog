@@ -10,6 +10,7 @@
                         @if(!empty($user))
                             <div class="pull-left" style="margin-left: 10px;">
                                 <p class="lead">{{$user->name}}</p>
+                                <p>Posts</p>
                             </div>
                             @if(Auth::check() && Auth::user()->id == $user->id)
                                 <div class="pull-right" style="margin-right: 10px;">

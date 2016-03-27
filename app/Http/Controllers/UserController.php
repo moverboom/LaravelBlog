@@ -64,4 +64,11 @@ class UserController extends Controller
             return view('home')->with('posts', $user->getPosts)->with('user', $user);
         }
     }
+
+    public function getUserComments($id) {
+        $user = User::find($id);
+        if(!empty($user)) {
+            return view('user.comments')->with('user', $user);
+        }
+    }
 }
