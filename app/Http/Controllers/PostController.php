@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Session;
+use App\User;
 use App\Post;
 use Redirect;
 use App\Http\Requests;
@@ -72,5 +73,22 @@ class PostController extends Controller
 		}
 		Session::flash('message', "Post not found");
 	    return Redirect::route('welcome');
+	}
+
+	public function getUserPosts($id) {
+		$posts = Post::where('author_id', $id)->orderBy('created_at', 'desc')->paginate(10);
+		$user = User::where('id', $id)->first();
+		if(!empty($posts) && !empty($user)) {
+			return view('home')->with('posts', $posts)->with('user', $user);
+		}
+	}
+
+	public function destroy($id) {
+		$post = Post::where('id', $id)->first();
+		if(!empty($post)) {
+			if($post->author_id == Auth::user()->id) {
+				$post->delete();
+			}
+		}
 	}
 }
