@@ -14,7 +14,7 @@ class UserController extends Controller
 	//user must be loggin in to access profile details
 	public function __construct()
 	{
-		//redirecht to login page
+		//redirect to login page
 	    $this->middleware('auth');
 	}
 
@@ -25,12 +25,11 @@ class UserController extends Controller
     *@param user id $id
     *@return view with user details
     */
-    public function user(Request $request, $id) {
+    public function user(Request $request, $id) { 
     	$user = User::find($id);
-
     	if(!$user) {
-    		Session::flash('message', "User not found");
-    		return view('welcome');
+            Session::flash('message', 'User not found');
+            return redirect('home');
     	} else if($user && $request->user()->id == $id) {
     		return view('user.edit')->with('user', $user);
     	}
@@ -55,8 +54,14 @@ class UserController extends Controller
     		$user->save();    		
     		return Redirect::back()->with('user', $user);
     	} else {
-    		Session::flash('message', "You don't have to required permissions");
-    		return view('welcome');
+    		return redirect('/')->with('message', 'You don\'t have the required permissions');
     	}
+    }
+
+    public function getUserPosts($id) {
+        $user = User::find($id);
+        if(!empty($user)) {
+            return view('home')->with('posts', $user->getPosts)->with('user', $user);
+        }
     }
 }

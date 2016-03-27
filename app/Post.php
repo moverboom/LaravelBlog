@@ -12,7 +12,7 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'author_id', 'on_post', 'created_at', 'update_at'
+        'author_id', 'title', 'content', 'slug', 'active', 'created_at', 'update_at'
     ];
 
     /**
@@ -23,4 +23,12 @@ class Post extends Model
     protected $hidden = [
         'id',
     ];
+
+    public function getAuthor() {
+        return $this->hasOne('App\User', 'id', 'author_id');
+    }
+
+    public function getComments() {
+        return $this->hasMany('App\Comment', 'on_post', 'id');
+    }
 }

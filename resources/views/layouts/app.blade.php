@@ -74,8 +74,7 @@
             </div>
         </div>
     </nav>
-
-    <div class="col-lg-6 col-lg-offset-3">
+    <div class="col-md-8 col-md-offset-2">
         @if (Session::has('message'))
             <div class="flash alert alert-warning">
                 <p class="panel-body">
@@ -90,8 +89,14 @@
                 </p>
             </div>
         @endif
+        @if (Session::has('fail'))
+            <div class="alert alert-success">
+                <p class="panel-body">
+                    <div>{{ Session::get('fail') }}</div>
+                </p>
+            </div>
+        @endif
     </div>
-
     @yield('content')
 
     <!-- JavaScripts -->

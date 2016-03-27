@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Comment;
 use Session;
 use App\User;
 use App\Post;
-use Redirect;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
@@ -35,8 +35,7 @@ class PostController extends Controller
 		if(!empty($post) && Auth::user()->id == $post->author_id) {
 			return view('posts.edit')->with('post', $post);
 		} else {
-			Session::flash('message', "You don't have to required permissions");
-    		return view('welcome');
+			return redirect('/')->with('message', 'You don\'t have the required permissions');
 		}
 	}
 
@@ -50,45 +49,45 @@ class PostController extends Controller
 			$post->slug = str_slug($post->title);
 			$post->save();
 
-			Session::flash('message-success', "Post created successfully");
-	    	return Redirect::route('home');
+	    	return redirect('home')->with('message-success', 'Post created successfully');
     	} else {
-    		Session::flash('message', "You don't have to required permissions");
-	    	return Redirect::route('welcome');
+    		return redirect('/')->with('message', 'You don\'t have the required permissions');
     	}
 	}
 
 	public function update(CreatePostRequest $request) {
-		$post = Post::where('id', $request->input('id'))->first();
+		$post = Post::find($request->input('id'));
 		if(!empty($post)) {
 			if($post->author_id == Auth::user()->id) {
 				$post->title = $request->input('title');
 				$post->content = $request->input('content');
 				$post->save();
-				Session::flash('message-success', "Post updated successfully");
-	    		return Redirect::route('home');
+				return redirect('home')->with('message-success', 'Post updated successfully');
 			}
-			Session::flash('message', "You don't have to required permissions");
-	    	return Redirect::route('welcome');
+			return redirect('/')->with('message', 'You don\'t have the required permissions');
 		}
-		Session::flash('message', "Post not found");
-	    return Redirect::route('welcome');
+		return redirect('/')->with('message', 'Post not found');
 	}
 
-	public function getUserPosts($id) {
-		$posts = Post::where('author_id', $id)->orderBy('created_at', 'desc')->paginate(10);
-		$user = User::where('id', $id)->first();
-		if(!empty($posts) && !empty($user)) {
-			return view('home')->with('posts', $posts)->with('user', $user);
+	public function show($slug) {
+		$post = Post::where('slug', $slug)->first();
+		if(!empty($post)) {
+			return view('posts.show')->with('post', $post);
 		}
+		Session::flash('message', 'Post not found');
+		return redirect()->back();
 	}
 
 	public function destroy($id) {
-		$post = Post::where('id', $id)->first();
+		$post = Post::find($id);
 		if(!empty($post)) {
 			if($post->author_id == Auth::user()->id) {
 				$post->delete();
+				return redirect('home')->with('message-success', 'Post removed successfully');
+			} else {
+	    		return redirect('/')->with('message', 'You don\'t have the required permissions');
 			}
 		}
+	    return redirect('/')->with('message', 'Post not found');
 	}
 }

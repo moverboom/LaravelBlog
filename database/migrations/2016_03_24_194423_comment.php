@@ -14,8 +14,7 @@ class Comment extends Migration
     {
         Schema::create('comments', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->text('body');
+            $table->text('content');
             $table->integer('on_post')->unsigned()->default(0);
             $table->foreign('on_post')
                   ->references('id')->on('posts')

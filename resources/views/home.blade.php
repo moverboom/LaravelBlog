@@ -34,7 +34,7 @@
                         @foreach($posts->all() as $post)
                             <ul class="list-group">
                                 <li class="list-group-item lead">
-                                    {{ $post->title }}
+                                    <a href="/post/{{ $post->slug }}">{{ $post->title }}</a>
                                     @if(Auth::check() && $post->author_id == Auth::user()->id)
                                         <div class="pull-right" style="margin-right: 10px;">
                                             <a href="{{ url('/post/edit/'.$post->id) }}" class="btn btn-default btn-sm">Edit</a>
