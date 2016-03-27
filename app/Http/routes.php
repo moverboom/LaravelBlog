@@ -50,6 +50,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/post/{slug}', 'PostController@show');
 
     //create comment
-    Route::post('/comment/create/{slug}', 'CommentController@create');
+    Route::post('/comment/create/{slug}', 'CommentController@store');
+
+    //delete comment
+    Route::get('/comment/destroy/{id}', 'CommentController@destroy');
 
 });

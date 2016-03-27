@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use Comment;
 use Session;
 use App\User;
 use App\Post;

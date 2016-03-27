@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 Use App\Comment;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -24,12 +25,25 @@ class CommentController extends Controller
     // 	}
     // }
 
-    public function create(CreateCommentRequest $request, $slug) {
+    public function store(CreateCommentRequest $request, $slug) {
         $comment = new Comment();
     	$comment->content = $request->input('content');
     	$comment->on_post = $request->input('on_post');
        	$comment->from_user = $request->input('from_user');
         $comment->save();
         return redirect('/post/'.$slug);
+    }
+
+    public function update(CreateCommentRequest $request) {
+
+    }
+
+    public function destroy($id) {
+        $comment = Comment::find($id);
+        if(!empty($comment) && Auth::user()->id == $comment->from_user) {
+            $comment->delete();
+            return redirect()->back()->with('message-success', 'Comment remove successfully');
+        }
+        return redirect()->back()->with('message', 'You don\'t have te required permissions');
     }
 }
