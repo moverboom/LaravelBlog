@@ -20,8 +20,15 @@
                     @if(!empty($posts))
                         @foreach($posts->all() as $post)
                             <ul class="list-group">
-                                <li class="list-group-item lead">{{ $post->title }}</li>
-                                <li class="list-group-item">{{ $post->body }}</li>
+                                <li class="list-group-item lead">
+                                    {{ $post->title }}
+                                    @if(Auth::check() && $post->author_id == Auth::user()->id)
+                                        <div class="pull-right" style="margin-right: 10px;">
+                                            <a href="{{ url('/post/edit/'.$post->id) }}" class="btn btn-default btn-sm">Edit</a>
+                                        </div>
+                                    @endif
+                                </li>
+                                <li class="list-group-item">{{ $post->content }}</li>
                             </ul>
                         @endforeach                        
                     @endif

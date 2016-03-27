@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Session;
 use App\Post;
 use Redirect;
@@ -21,23 +22,55 @@ class PostController extends Controller
 
 	public function index() {
 		$posts = Post::where('active', 1)->orderBy('created_at', 'desc')->paginate(10);
-		return view('/home')->with('posts', $posts);
+		return view('home')->with('posts', $posts);
 	}
 
 	public function create() {
 		return view('posts.create');
 	}
 
-	public function store(CreatePostRequest $request) {
-		$post = new Post();
-		$post->title = $request->input('title');
-		$post->body = $request->input('content');
-		$post->author_id = $request->user()->id;
-		$post->active = 1; //IMPLTEMENT DRAFT FUNCTIONALITY LATER
-		$post->slug = str_slug($post->title);
-		$post->save();
+	public function edit($id) {
+		$post = Post::where('id', $id)->first();
+		if(!empty($post) && Auth::user()->id == $post->author_id) {
+			return view('posts.edit')->with('post', $post);
+		} else {
+			Session::flash('message', "You don't have to required permissions");
+    		return view('welcome');
+		}
+	}
 
-		Session::flash('message-success', "Post created successfully");
-    	return Redirect::route('home');
+	public function store(CreatePostRequest $request) {
+		if(Auth::check()) {
+			$post = new Post();
+			$post->title = $request->input('title');
+			$post->content = $request->input('content');
+			$post->author_id = $request->user()->id;
+			$post->active = 1; //IMPLTEMENT DRAFT FUNCTIONALITY LATER
+			$post->slug = str_slug($post->title);
+			$post->save();
+
+			Session::flash('message-success', "Post created successfully");
+	    	return Redirect::route('home');
+    	} else {
+    		Session::flash('message', "You don't have to required permissions");
+	    	return Redirect::route('welcome');
+    	}
+	}
+
+	public function update(CreatePostRequest $request) {
+		$post = Post::where('id', $request->input('id'))->first();
+		if(!empty($post)) {
+			if($post->author_id == Auth::user()->id) {
+				$post->title = $request->input('title');
+				$post->content = $request->input('content');
+				$post->save();
+				Session::flash('message-success', "Post updated successfully");
+	    		return Redirect::route('home');
+			}
+			Session::flash('message', "You don't have to required permissions");
+	    	return Redirect::route('welcome');
+		}
+		Session::flash('message', "Post not found");
+	    return Redirect::route('welcome');
 	}
 }
