@@ -12,20 +12,11 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'author_id', 'title', 'content', 'slug', 'active', 'created_at', 'update_at'
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'id',
+        'title', 'content', 'slug', 'active', 'created_at', 'update_at'
     ];
 
     public function getAuthor() {
-        return $this->hasOne('App\User', 'id', 'author_id');
+        return $this->belongsTo('App\User', 'author_id', 'id');
     }
 
     public function getComments() {

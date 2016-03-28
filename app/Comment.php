@@ -12,7 +12,7 @@ class Comment extends Model
      * @var array
      */
     protected $fillable = [
-        'content', 'on_post', 'from_user', 'created_at', 'update_at'
+        'content', 'created_at', 'update_at'
     ];
 
     /**
@@ -25,10 +25,10 @@ class Comment extends Model
     ];
 
     public function getUser() {
-        return $this->hasOne('App\User', 'id', 'from_user');
+        return $this->belongsTo('App\User', 'from_user', 'id');
     }
 
     public function getPost() {
-        return $this->hasOne('App\Post', 'id', 'on_post');
+        return $this->belongsTo('App\Post', 'on_post', 'id');
     }
 }

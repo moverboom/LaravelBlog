@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 Use App\Comment;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -18,13 +19,15 @@ class CommentController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(CreateCommentRequest $request, $slug) {
-        $comment = new Comment();
-    	$comment->content = $request->input('content');
-    	$comment->on_post = $request->input('on_post');
-       	$comment->from_user = $request->input('from_user');
-        if($comment->save()) {
-            return redirect('/post/' . $slug);
+    public function store(Request $request, Post $post) {
+        if(!empty($post)) {
+            $comment = new Comment;
+            $comment->content = $request->input('content');
+            $comment->on_post = $post->id;
+            $comment->from_user = Auth::id();
+            if ($comment->save()) {
+                return redirect('/post/' . $post->slug);
+            }
         }
         return redirect()->back()->with('message', 'Post not created');
     }

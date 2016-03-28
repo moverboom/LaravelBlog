@@ -28,4 +28,11 @@ class CreatePostRequest extends Request
             'content' => 'required'
         ];
     }
+
+    public function response(array $errors)
+    {
+        return redirect()->to(app('url')->previous())
+            ->withErrors($errors)
+            ->withInput();
+    }
 }

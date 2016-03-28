@@ -41,10 +41,8 @@
 			  	<div class="panel-heading">Comments</div>
 			  		@if(Auth::check())
 				  		<div class="panel-body">
-				  			{!! Form::open(array('url' => 'comment/create/'.$post->slug, 'method' => 'POST', 'role' => 'form' )) !!}
-				  				<div class="form-group"> 
-				  					{!! Form::hidden('on_post', $post->id) !!}
-				  					{!! Form::hidden('from_user', Auth::user()->id) !!}
+				  			{!! Form::open(array('route' => array('comment/create', $post), 'method' => 'POST', 'role' => 'form' )) !!}
+				  				<div class="form-group">
 				  					{!! Form::label('content', 'New Comment', array('for' => 'content')) !!}
 	                            	{!! Form::text('content', '', array('class' => 'form-control', 
 	                                                                            'id' => 'content', 'placeholder' => 'Great Post!')) !!}

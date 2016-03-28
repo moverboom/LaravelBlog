@@ -29,6 +29,21 @@ class PostController extends Controller
 		return view('posts.create');
 	}
 
+	public function store(CreatePostRequest $request) {
+		if(Auth::check()) {
+			$post = new Post;
+			$post->title = $request->input('title');
+			$post->content = $request->input('content');
+			$post->author_id = Auth::id();
+			$post->active = 1; //IMPLTEMENT DRAFT FUNCTIONALITY LATER
+			$post->slug = str_slug($post->title);
+			$post->save();
+
+			return redirect('home')->with('message-success', 'Post created successfully');
+		}
+		return redirect('/')->with('message', 'You don\'t have the required permissions');
+	}
+
 	public function edit($id) {
 		$post = Post::where('id', $id)->first();
 		if(!empty($post) && Auth::user()->id == $post->author_id) {
@@ -38,26 +53,10 @@ class PostController extends Controller
 		}
 	}
 
-	public function store(CreatePostRequest $request) {
-		if(Auth::check()) {
-			$post = new Post();
-			$post->title = $request->input('title');
-			$post->content = $request->input('content');
-			$post->author_id = $request->user()->id;
-			$post->active = 1; //IMPLTEMENT DRAFT FUNCTIONALITY LATER
-			$post->slug = str_slug($post->title);
-			$post->save();
-
-	    	return redirect('home')->with('message-success', 'Post created successfully');
-    	} else {
-    		return redirect('/')->with('message', 'You don\'t have the required permissions');
-    	}
-	}
-
 	public function update(CreatePostRequest $request) {
 		$post = Post::find($request->input('id'));
 		if(!empty($post)) {
-			if($post->author_id == Auth::user()->id) {
+			if($post->author_id == Auth::id()) {
 				$post->title = $request->input('title');
 				$post->content = $request->input('content');
 				$post->save();
@@ -80,7 +79,7 @@ class PostController extends Controller
 	public function destroy($id) {
 		$post = Post::find($id);
 		if(!empty($post)) {
-			if($post->author_id == Auth::user()->id) {
+			if($post->author_id == Auth::id()) {
 				$post->delete();
 				return redirect('home')->with('message-success', 'Post removed successfully');
 			} else {
