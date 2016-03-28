@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
@@ -45,10 +46,8 @@ class UserController extends Controller
     *@param user id $id
     *@return view with user details
     */
-    public function update(Request $request, $id) {
-    	$user = User::find($id);
-
-    	if($user && $request->user()->id == $id) {
+    public function update(Request $request, User $user) {
+    	if(!empty($user) && $user->id == Auth::id()) {
     		$user->name = $request->input('name');
     		$user->email = $request->input('email');
     		$user->save();    		

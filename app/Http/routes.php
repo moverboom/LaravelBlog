@@ -25,7 +25,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/user/{id}', 'UserController@user')->where('id', '[0-9]+');
 
     //update user profile
-    Route::post('/user/update/{id}', 'UserController@update')->where('id', '[0-9]+');
+    Route::post('/user/update/{user}', ['as' => 'user/update', 'uses' => 'UserController@update']);
 
     //users posts
     Route::get('/user/{id}/posts', 'UserController@getUserPosts')->where('id', '[0-9]+');
@@ -54,5 +54,4 @@ Route::group(['middleware' => 'web'], function () {
 
     //delete comment
     Route::get('/comment/destroy/{id}', 'CommentController@destroy');
-
 });
