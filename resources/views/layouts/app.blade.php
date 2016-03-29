@@ -63,9 +63,9 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/user/'.Auth::user()->id) }}"><i class="fa fa-btn fa-user"></i>My Profile</a></li>
-                                <li><a href="{{ url('/user/'.Auth::user()->id.'/posts') }}"><i class="fa fa-btn fa-file-text"></i>My Posts</a></li>
-                                <li><a href="{{ url('/user/'.Auth::user()->id.'/comments') }}"><i class="fa fa-btn fa-comments"></i>My Comments</a></li>
+                                <li><a href="{{ url('/user/'.Auth::user()->userid) }}"><i class="fa fa-btn fa-user"></i>My Profile</a></li>
+                                <li><a href="{{ url('/user/'.Auth::user()->userid.'/posts') }}"><i class="fa fa-btn fa-file-text"></i>My Posts</a></li>
+                                <li><a href="{{ url('/user/'.Auth::user()->userid.'/comments') }}"><i class="fa fa-btn fa-comments"></i>My Comments</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>

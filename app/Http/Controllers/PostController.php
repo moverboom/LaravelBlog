@@ -32,6 +32,7 @@ class PostController extends Controller
 	public function store(CreatePostRequest $request) {
 		if(Auth::check()) {
 			$post = new Post;
+			$post->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
 			$post->title = $request->input('title');
 			$post->content = $request->input('content');
 			$post->author_id = Auth::id();

@@ -31,7 +31,7 @@
                 <div class="panel-footer">
                 	<div class="text-muted">
                     	Created at: {{$post->created_at->toDateString()}} | 
-                    	Author: <a href="/user/{{$post->getAuthor->id}}">{{$post->getAuthor->name}}</a>
+                    	Author: <a href="/user/{{$post->getAuthor->userid}}">{{$post->getAuthor->name}}</a>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
 					  	<ul class="list-group">
 					  		@foreach($post->getComments->all() as $comment)
 					    		<li class="list-group-item">
-					    			<a href="/user/{{ $comment->getUser->id }}" class="text-muted">{{ $comment->getUser->name }}</a>
+					    			<a href="/user/{{ $comment->getUser->userid }}" class="text-muted">{{ $comment->getUser->name }}</a>
 					    			<br>
 					    			{{ $comment->content }}
 					    		</li>

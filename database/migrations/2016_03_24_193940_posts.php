@@ -13,7 +13,8 @@ class Posts extends Migration
     public function up()
     {
         Schema::create('posts', function(Blueprint $table) {
-            $table->increments('id');
+            $table->string('id', 11);
+            $table->primary('id');
             $table->integer('author_id')->unsigned()->default(0);
             $table->foreign('author_id')
                   ->references('id')->on('users')

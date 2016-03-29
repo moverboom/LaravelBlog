@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'slug', 'active', 'created_at', 'update_at'
+        'id', 'title', 'content', 'slug', 'active', 'created_at', 'update_at'
     ];
 
     public function getAuthor() {

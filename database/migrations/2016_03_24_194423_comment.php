@@ -13,9 +13,10 @@ class Comment extends Migration
     public function up()
     {
         Schema::create('comments', function(Blueprint $table) {
-            $table->increments('id');
+            $table->string('id', 11);
+            $table->primary('id');
             $table->text('content');
-            $table->integer('on_post')->unsigned()->default(0);
+            $table->string('on_post', 11);
             $table->foreign('on_post')
                   ->references('id')->on('posts')
                   ->onDelete('cascade');

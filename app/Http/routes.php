@@ -22,16 +22,16 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/home', ['as' => 'home', 'uses' => 'PostController@index']);
 
     //user profilfe
-    Route::get('/user/{id}', 'UserController@user')->where('id', '[0-9]+');
+    Route::get('/user/{userid}', 'UserController@profile');
 
     //update user profile
     Route::post('/user/update/{user}', ['as' => 'user/update', 'uses' => 'UserController@update']);
 
     //users posts
-    Route::get('/user/{id}/posts', 'UserController@getUserPosts')->where('id', '[0-9]+');
+    Route::get('/user/{userid}/posts', 'UserController@getUserPosts');
 
     //users comments
-    Route::get('/user/{id}/comments', 'UserController@getUserComments')->where('id', '[0-9]+');
+    Route::get('/user/{userid}/comments', 'UserController@getUserComments');
 
     //store the new post
     Route::get('/post/create', 'PostController@create');
@@ -54,4 +54,6 @@ Route::group(['middleware' => 'web'], function () {
 
     //delete comment
     Route::get('/comment/destroy/{id}', 'CommentController@destroy');
+
+    Route::get('testid', function() {dd(App\Post::all());});
 });

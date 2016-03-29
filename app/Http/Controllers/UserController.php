@@ -23,27 +23,29 @@ class UserController extends Controller
     *
     *Show users' details
     *
-    *@param user id $id
+    *@param userid as Base64 identifier
     *@return view with user details
     */
-    public function user(Request $request, $id) { 
-    	$user = User::find($id);
-    	if(!$user) {
+    public function profile($userid) {
+    	$user = User::where('userid', $userid)->first();
+    	if(empty($user)) {
             Session::flash('message', 'User not found');
             return redirect('home');
-    	} else if($user && $request->user()->id == $id) {
+    	} else if(Auth::user()->userid == $userid) {
     		return view('user.edit')->with('user', $user);
-    	}
-    	else {
+    	} else if(Auth::check()) {
     		return view('user.profile')->with('user', $user);
-    	}
+    	} else {
+            return redirect('/login');
+        }
     }
 
     /**
     *
     *Update details
     *
-    *@param user id $id
+    *@param $user user model
+     * @param $request request
     *@return view with user details
     */
     public function update(Request $request, User $user) {
@@ -57,15 +59,29 @@ class UserController extends Controller
     	}
     }
 
-    public function getUserPosts($id) {
-        $user = User::find($id);
+	/**
+	 *
+	 *Show user posts
+	 *
+	 *@param $userid as Base64 identifier
+	 *@return view with user details
+	 */
+    public function getUserPosts($userid) {
+        $user = User::where('userid', $userid)->first();
         if(!empty($user)) {
             return view('home')->with('posts', $user->getPosts)->with('user', $user);
         }
     }
 
-    public function getUserComments($id) {
-        $user = User::find($id);
+	/**
+	 *
+	 *Show user comments
+	 *
+	 *@param $userid as Base64 identifier
+	 *@return view with user details
+	 */
+    public function getUserComments($userid) {
+        $user = User::where('userid', $userid)->first();
         if(!empty($user)) {
             return view('user.comments')->with('user', $user);
         }
