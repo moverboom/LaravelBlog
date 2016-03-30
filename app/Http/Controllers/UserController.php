@@ -27,7 +27,7 @@ class UserController extends Controller
     *@return view with user details
     */
     public function profile($userid) {
-    	$user = User::where('userid', $userid)->first();
+    	$user = User::find($userid);
     	if(empty($user)) {
             Session::flash('message', 'User not found');
             return redirect('home');
@@ -67,7 +67,7 @@ class UserController extends Controller
 	 *@return view with user details
 	 */
     public function getUserPosts($userid) {
-        $user = User::where('userid', $userid)->first();
+		$user = User::find($userid);
         if(!empty($user)) {
             return view('home')->with('posts', $user->getPosts)->with('user', $user);
         }
@@ -81,7 +81,7 @@ class UserController extends Controller
 	 *@return view with user details
 	 */
     public function getUserComments($userid) {
-        $user = User::where('userid', $userid)->first();
+		$user = User::find($userid);
         if(!empty($user)) {
             return view('user.comments')->with('user', $user);
         }

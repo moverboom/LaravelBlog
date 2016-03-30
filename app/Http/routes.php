@@ -40,7 +40,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/post/create', ['as' => 'create_post', 'uses' => 'PostController@store']);
 
     //edit post
-    Route::get('/post/edit/{id}', 'PostController@edit')->where('id', '[0-9]+');
+    Route::get('/post/edit/{id}', 'PostController@edit');
     Route::post('/post/edit', 'PostController@update');
 
     //Destroy post

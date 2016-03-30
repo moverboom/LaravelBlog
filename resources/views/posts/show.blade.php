@@ -26,12 +26,12 @@
                             @endforeach
                         </ul>
                     @endif
-                    <div class="lead">{{$post->content}}</div>
+                    <div class="lead">{!! html_entity_decode($post->content) !!}</div>
                 </div>
                 <div class="panel-footer">
                 	<div class="text-muted">
                     	Created at: {{$post->created_at->toDateString()}} | 
-                    	Author: <a href="/user/{{$post->getAuthor->userid}}">{{$post->getAuthor->name}}</a>
+                    	Author: <a href="/user/{{$post->getAuthor->id}}">{{$post->getAuthor->name}}</a>
                     </div>
                 </div>
             </div>

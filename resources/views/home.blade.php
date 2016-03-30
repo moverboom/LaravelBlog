@@ -43,7 +43,7 @@
                                         </div>
                                     @endif
                                 </li>
-                                <li class="list-group-item">{{ $post->content }}</li>
+                                <li class="list-group-item">{!! html_entity_decode($post->content) !!}</li>
                             </ul>
                         @endforeach                        
                     @endif
