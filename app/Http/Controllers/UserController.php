@@ -31,7 +31,7 @@ class UserController extends Controller
     	if(empty($user)) {
             Session::flash('message', 'User not found');
             return redirect('home');
-    	} else if(Auth::user()->userid == $userid) {
+    	} else if(Auth::id() == $userid) {
     		return view('user.edit')->with('user', $user);
     	} else if(Auth::check()) {
     		return view('user.profile')->with('user', $user);

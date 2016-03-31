@@ -20,7 +20,7 @@
                             @endforeach
                         </ul>
                     @endif
-                    {!! Form::model($post, array('url' => 'post/edit', 'method' => 'POST', 'role' => 'form' )) !!}
+                    {!! Form::model($post, array('route' => array('post/update', $post), 'method' => 'POST', 'role' => 'form' )) !!}
                         {!! csrf_field() !!}
 						<div class="form-group">
 						    {!! Form::label('title', 'Title', array('for' => 'title')) !!}

@@ -35,7 +35,7 @@
                         @foreach($posts->all() as $post)
                             <ul class="list-group">
                                 <li class="list-group-item lead">
-                                    <a href="/post/{{ $post->slug }}">{{ $post->title }}</a>
+                                    <a href="/post/{{ $post->slug }}">{{ html_entity_decode($post->title) }}</a>
                                     @if(Auth::check() && $post->author_id == Auth::user()->id)
                                         <div class="pull-right" style="margin-right: 10px;">
                                             <a href="{{ url('/post/edit/'.$post->id) }}" class="btn btn-default btn-sm">Edit</a>
@@ -43,7 +43,7 @@
                                         </div>
                                     @endif
                                 </li>
-                                <li class="list-group-item">{!! html_entity_decode($post->content) !!}</li>
+                                <li class="list-group-item">{{ $post->content }}</li>
                             </ul>
                         @endforeach                        
                     @endif

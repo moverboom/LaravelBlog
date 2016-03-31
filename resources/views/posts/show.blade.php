@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                 	<div class="row"> 
                 		<div class="pull-left" style="margin-left: 10px;"> 
-	                		<p class="lead">{{$post->title}}</p>
+	                		<p class="lead">{{ $post->title }}</p>
 	                	</div>
 	                	@if(Auth::check() && $post->author_id == Auth::user()->id)
 	                        <div class="pull-right" style="margin-right: 10px;">
@@ -26,7 +26,7 @@
                             @endforeach
                         </ul>
                     @endif
-                    <div class="lead">{!! html_entity_decode($post->content) !!}</div>
+                    <div class="lead">{{ $post->content }}</div>
                 </div>
                 <div class="panel-footer">
                 	<div class="text-muted">

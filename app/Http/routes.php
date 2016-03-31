@@ -41,7 +41,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //edit post
     Route::get('/post/edit/{id}', 'PostController@edit');
-    Route::post('/post/edit', 'PostController@update');
+    Route::post('/post/edit/{post}', ['as' => 'post/update', 'uses' => 'PostController@update']);
 
     //Destroy post
     Route::get('/post/destroy/{id}', 'PostController@destroy');

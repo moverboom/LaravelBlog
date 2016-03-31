@@ -46,7 +46,7 @@ class PostController extends Controller
 	}
 
 	public function edit($id) {
-		$post = Post::where('id', $id)->first();
+		$post = Post::find($id);
 		if(!empty($post) && Auth::user()->id == $post->author_id) {
 			return view('posts.edit')->with('post', $post);
 		} else {
@@ -54,10 +54,9 @@ class PostController extends Controller
 		}
 	}
 
-	public function update(CreatePostRequest $request) {
-		$post = Post::find($request->input('id'));
+	public function update(Request $request, Post $post) {
 		if(!empty($post)) {
-			if($post->author_id == Auth::id()) {
+			if($post->getAuthor->id == Auth::id()) {
 				$post->title = $request->input('title');
 				$post->content = $request->input('content');
 				$post->save();
