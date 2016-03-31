@@ -12,7 +12,7 @@
 	                	</div>
                 	</div>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="overflow: auto;">
                     @if(!empty($errors))
                         <ul>
                             @foreach($errors->all() as $message)
@@ -28,7 +28,7 @@
 						</div>
 						<div class="form-group">
 						    {!! Form::label('content', 'Content', array('for' => 'content')) !!}
-                            {!! Form::textarea('content', $post->content, $attributes = array('class' => 'form-control', 'rows' => '4', 'cols' => '5', 'placeholder' => 'Write something beautiful!')) !!}
+                            {!! Form::textarea('content', $post->content, $attributes = array('class' => 'form-control', 'rows' => '10', 'cols' => '5', 'placeholder' => 'Write something beautiful!')) !!}
 						</div> 
                         {!! Form::submit('Post', array('class' => 'btn btn-info', 'type' => 'submit')) !!}
                     {!! Form::close() !!}

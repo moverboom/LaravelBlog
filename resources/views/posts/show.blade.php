@@ -26,7 +26,7 @@
                             @endforeach
                         </ul>
                     @endif
-                    <div class="lead">{{ $post->content }}</div>
+                    <div class="">{!! Markdown::string($post->content) !!}</div>
                 </div>
                 <div class="panel-footer">
                 	<div class="text-muted">
@@ -56,7 +56,7 @@
 					  	<ul class="list-group">
 					  		@foreach($post->getComments->all() as $comment)
 					    		<li class="list-group-item">
-					    			<a href="/user/{{ $comment->getUser->userid }}" class="text-muted">{{ $comment->getUser->name }}</a>
+					    			<a href="/user/{{ $comment->getUser->id }}" class="text-muted">{{ $comment->getUser->name }}</a>
 					    			<br>
 					    			{{ $comment->content }}
 					    		</li>

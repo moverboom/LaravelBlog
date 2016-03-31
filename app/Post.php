@@ -14,7 +14,16 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'title', 'content', 'slug', 'active', 'created_at', 'update_at'
+        'title', 'content', 'slug', 'active', 'created_at', 'update_at'
+    ];
+
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'id'
     ];
 
     public function getAuthor() {

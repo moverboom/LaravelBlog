@@ -55,5 +55,5 @@ Route::group(['middleware' => 'web'], function () {
     //delete comment
     Route::get('/comment/destroy/{id}', 'CommentController@destroy');
 
-    Route::get('testid', function() {dd(App\Post::all());});
+    Route::get('testmd', function() { echo Markdown::string('#test'); });
 });

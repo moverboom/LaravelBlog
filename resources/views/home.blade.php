@@ -43,7 +43,7 @@
                                         </div>
                                     @endif
                                 </li>
-                                <li class="list-group-item">{{ $post->content }}</li>
+                                <li class="list-group-item">{!! Markdown::string(substr($post->content, 0, 200).(strlen($post->content) > 200 ? "..." : "")) !!}</li>
                             </ul>
                         @endforeach                        
                     @endif

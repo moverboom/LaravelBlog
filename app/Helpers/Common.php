@@ -35,7 +35,8 @@ class Common extends Model
                 // also I am doing trim() here, you may remove it, if you wish.
                 //If there are already encoded tags, decode them to the original HTML tag
                 //Then encode them again
-                $result[$key] = htmlentities(htmlspecialchars_decode($value));
+                //$result[$key] = htmlentities(htmlspecialchars_decode($value));
+                $result[$key] = trim(strip_tags($value));
             }
         }
 
