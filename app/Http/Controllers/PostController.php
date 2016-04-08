@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Post;
+use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\CreatePostRequest as CreatePostRequest;
 
 
 class PostController extends Controller
 {
-    //user must be loggin in to see any posts
+    //user must be logged in to see any posts
 	public function __construct()
 	{
 		//redirecht to login page
@@ -30,19 +31,16 @@ class PostController extends Controller
 	}
 
 	public function store(CreatePostRequest $request) {
-		if(Auth::check()) {
-			$post = new Post;
-			$post->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
-			$post->title = $request->input('title');
-			$post->content = $request->input('content');
-			$post->author_id = Auth::id();
-			$post->active = 1; //IMPLTEMENT DRAFT FUNCTIONALITY LATER
-			$post->slug = str_slug($post->title);
-			$post->save();
-
-			return redirect('home')->with('message-success', 'Post created successfully');
-		}
-		return redirect('/')->with('message', 'You don\'t have the required permissions');
+		//Authentication is handled in middleware and Request
+		$post = new Post;
+		$post->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
+		$post->title = $request->input('title');
+		$post->content = $request->input('content');
+		$post->author_id = Auth::id();
+		$post->active = 1; //IMPLTEMENT DRAFT FUNCTIONALITY LATER
+		$post->slug = str_slug($post->title);
+		$post->save();
+		return redirect('home')->with('message-success', 'Post created successfully');
 	}
 
 	public function edit($id) {

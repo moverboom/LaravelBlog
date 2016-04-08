@@ -13,10 +13,10 @@
                 	</div>
                 </div>
                 <div class="panel-body">
-                    @if(!empty($errors))
+                    @if($errors->any())
                         <ul>
-                            @foreach($errors->all() as $message)
-                                <li style="color: darkred">{{ $message }}</li>
+                            @foreach($errors->all() as $error)
+                                <li style="color: darkred">{{ $error }}</li>
                             @endforeach
                         </ul>
                     @endif
@@ -38,5 +38,4 @@
         </div>
     </div>
 </div>
-{{ var_dump($errors) }}
 @endsection

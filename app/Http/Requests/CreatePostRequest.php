@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use App\Http\Requests\Request;
 
 class CreatePostRequest extends Request
@@ -13,7 +14,11 @@ class CreatePostRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        if(Auth::check()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -24,15 +29,8 @@ class CreatePostRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required',
-            'content' => 'required'
+            'title' => 'required|max:80|unique:posts,title',
+            'content' => 'required|min:25'
         ];
-    }
-
-    public function response(array $errors)
-    {
-        return redirect()->to(app('url')->previous())
-            ->withErrors($errors)
-            ->withInput();
     }
 }

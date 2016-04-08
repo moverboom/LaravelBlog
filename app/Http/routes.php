@@ -10,9 +10,12 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::group(['middleware' => ['web']], function() {
 
-Route::group(['middleware' => 'web'], function () {
+    //Call the auth() method from Router.php
+    //This is where the default authentication routes such as /login /register are defined
     Route::auth();
+
 	Route::get('/', function() {
 		return view('welcome');
 	});
@@ -55,5 +58,6 @@ Route::group(['middleware' => 'web'], function () {
     //delete comment
     Route::get('/comment/destroy/{id}', 'CommentController@destroy');
 
+    //Route used for testing new features
     Route::get('testmd', function() { echo Markdown::string('#test'); });
 });
