@@ -47,6 +47,9 @@
                             </ul>
                         @endforeach                        
                     @endif
+                    <div class="pull-right">
+                        {!! $posts->render() !!}
+                    </div>
                 </div>
             </div>
         </div>

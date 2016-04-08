@@ -27,17 +27,10 @@ class CommentController extends Controller
      * @return returns back if success
      */
     public function store(Request $request, Post $post) {
-        if(!empty($post)) {
-            $comment = new Comment;
-            $comment->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
-            $comment->content = $request->input('content');
-            $comment->on_post = $post->id;
-            $comment->from_user = Auth::id();
-            if ($comment->save()) {
-                return redirect()->back()->with('message-success', 'Comment created');
-            }
-        }
-        return redirect()->back()->with('message', 'Comment not created');
+        $request['from_user'] = Auth::id();
+        $request['on_post'] = $post->id;
+        Comment::create($request->all());
+        return redirect()->back()->with('message-success', 'Comment created');
     }
 
     /**

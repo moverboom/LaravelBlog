@@ -52,6 +52,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes(Router $router)
     {
+        //Removed web middleware here
+        //It is set in routes.php
         $router->group([
             'namespace' => $this->namespace,
         ], function ($router) {

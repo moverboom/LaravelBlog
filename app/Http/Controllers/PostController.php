@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Post;
-use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,16 +78,13 @@ class PostController extends Controller
      * @param Post $post original post
      * @return posts.show with post if success
      */
-	public function update(Request $request, Post $post) {
-		if(!empty($post)) {
-			if($post->getAuthor->id == Auth::id()) {
-				$post->update($request->all());
-				return view('posts.show')->with('post', $post)->with('message-success', 'Post updated successfully');
-			}
-			return redirect('/')->with('message', $this->MESSAGE_ERROR_PERMISSIONS);
-		}
-		return redirect('/')->with('message', 'Post not found');
-	}
+    public function update(Request $request, Post $post) {
+        if ($post->getAuthor->id == Auth::id()) {
+            $post->update($request->all());
+            return view('posts.show')->with('post', $post)->with('message-success', 'Post updated successfully');
+        }
+        return redirect('/')->with('message', $this->MESSAGE_ERROR_PERMISSIONS);
+    }
 
     /**
      * Shows a post

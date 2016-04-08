@@ -59,6 +59,12 @@
 					    			<a href="/user/{{ $comment->getUser->id }}" class="text-muted">{{ $comment->getUser->name }}</a>
 					    			<br>
 					    			{{ $comment->content }}
+									@if(Auth::check() && $comment->from_user == Auth::user()->id)
+										<div class="pull-right" style="margin-right: 10px;">
+											<a href="{{ url('/comment/edit/'.$comment->id) }}" class="text-muted">Edit</a>&nbsp;|&nbsp;
+											<a href="{{ url('/comment/destroy/'.$comment->id) }}" class="text-muted">Delete</a>
+										</div>
+									@endif
 					    		</li>
 					    	@endforeach
 					  	</ul>
