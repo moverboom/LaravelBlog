@@ -52,16 +52,9 @@ class PostController extends Controller
 	 * @return posts.show which shows the created post with confirm message
 	 */
 	public function store(CreatePostRequest $request) {
-		//Authentication is handled in middleware and Request
-		$post = new Post;
-		$post->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
-		$post->title = $request->input('title');
-		$post->content = $request->input('content');
-		$post->author_id = Auth::id();
-		$post->active = 1; //IMPLTEMENT DRAFT FUNCTIONALITY LATER
-		$post->slug = str_slug($post->title);
-		$post->save();
-		return redirect('posts.show')->with('post', $post)->with('message-success', 'Post created successfully');
+        $request['author_id'] = Auth::id();
+		$post = Post::create($request->all());
+		return view('posts.show')->with('post', $post)->with('message-success', 'Post created successfully');
 	}
 
     /**
@@ -90,11 +83,8 @@ class PostController extends Controller
 	public function update(Request $request, Post $post) {
 		if(!empty($post)) {
 			if($post->getAuthor->id == Auth::id()) {
-				$post->title = $request->input('title');
-				$post->slug = str_slug(($request->input('title')));
-				$post->content = $request->input('content');
-				$post->save();
-				return redirect('posts.show')->with('post', $post)->with('message-success', 'Post updated successfully');
+				$post->update($request->all());
+				return view('posts.show')->with('post', $post)->with('message-success', 'Post updated successfully');
 			}
 			return redirect('/')->with('message', $this->MESSAGE_ERROR_PERMISSIONS);
 		}

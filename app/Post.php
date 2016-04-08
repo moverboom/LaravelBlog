@@ -26,7 +26,25 @@ class Post extends Model
         'id'
     ];
 
-    public function create()
+    /**
+     * Creates a new Post
+     * Overwrites the default Eloquent create method
+     *
+     * @param array $attributes
+     * @return Post
+     */
+    public static function create(array $attributes = [])
+    {
+        $post = new self();
+        $post->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
+        $post->title = $attributes['title'];
+        $post->content = $attributes['content'];
+        $post->slug = str_slug($attributes['title']);
+        $post->author_id = $attributes['author_id'];
+        $post->active = 1; //IMPLEMENT DRAFT FUNCTIONALITY LATER
+        $post->save();
+        return $post;
+    }
 
     public function getAuthor() {
         return $this->belongsTo('App\User', 'author_id', 'id');
