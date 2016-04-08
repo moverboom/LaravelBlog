@@ -19,6 +19,13 @@ class CommentController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * stores a new comment
+     *
+     * @param Request $request submitted data
+     * @param Post $post Post to comment on
+     * @return returns back if success
+     */
     public function store(Request $request, Post $post) {
         if(!empty($post)) {
             $comment = new Comment;
@@ -27,16 +34,29 @@ class CommentController extends Controller
             $comment->on_post = $post->id;
             $comment->from_user = Auth::id();
             if ($comment->save()) {
-                return redirect('/post/' . $post->slug);
+                return redirect()->back()->with('message-success', 'Comment created');
             }
         }
-        return redirect()->back()->with('message', 'Post not created');
+        return redirect()->back()->with('message', 'Comment not created');
     }
 
+    /**
+     * Updates a comment
+     * NOT IMPLEMENTED YET
+     *
+     * @param CreateCommentRequest $request
+     */
     public function update(CreateCommentRequest $request) {
-
+        return redirect()->back();
     }
 
+    /**
+     * Destroys a comment (also in database)
+     * also check if the user making the request is the author
+     *
+     * @param $id
+     * @return mixed
+     */
     public function destroy($id) {
         $comment = Comment::find($id);
         if(!empty($comment) && Auth::user()->id == $comment->from_user) {

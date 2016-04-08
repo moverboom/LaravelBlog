@@ -26,6 +26,8 @@ class Post extends Model
         'id'
     ];
 
+    public function create()
+
     public function getAuthor() {
         return $this->belongsTo('App\User', 'author_id', 'id');
     }
