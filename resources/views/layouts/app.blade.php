@@ -89,13 +89,6 @@
                 </p>
             </div>
         @endif
-        @if (Session::has('fail'))
-            <div class="alert alert-success">
-                <p class="panel-body">
-                    <div>{{ Session::get('fail') }}</div>
-                </p>
-            </div>
-        @endif
     </div>
     @yield('content')
 

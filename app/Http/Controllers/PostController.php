@@ -97,8 +97,7 @@ class PostController extends Controller
 		if(!empty($post)) {
 			return view('posts.show')->with('post', $post);
 		}
-		Session::flash('message', 'Post not found');
-		return redirect()->back();
+		return redirect()->back()->with('message', 'Post not found');
 	}
 
     /**

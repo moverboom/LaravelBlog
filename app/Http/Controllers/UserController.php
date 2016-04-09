@@ -29,15 +29,12 @@ class UserController extends Controller
     public function profile($userid) {
     	$user = User::find($userid);
     	if(empty($user)) {
-            Session::flash('message', 'User not found');
-            return redirect('home');
+            return redirect('home')->with('message', 'User not found');
     	} else if(Auth::id() == $userid) {
     		return view('user.edit')->with('user', $user);
     	} else if(Auth::check()) {
     		return view('user.profile')->with('user', $user);
-    	} else {
-            return redirect('/login');
-        }
+    	}
     }
 
     /**
@@ -50,10 +47,11 @@ class UserController extends Controller
     */
     public function update(Request $request, User $user) {
     	if(!empty($user) && $user->id == Auth::id()) {
-    		$user->name = $request->input('name');
-    		$user->email = $request->input('email');
-    		$user->save();    		
-    		return Redirect::back()->with('user', $user);
+			$user->update([
+				$request->input('name'),
+				$request->input('email')
+			]);
+    		return redirect()->back()->with('user', $user);
     	} else {
     		return redirect('/')->with('message', 'You don\'t have the required permissions');
     	}

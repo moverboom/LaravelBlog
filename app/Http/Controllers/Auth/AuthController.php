@@ -63,12 +63,6 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        $user = new User;
-        $user->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = bcrypt($data['password']);
-        $user->save();
-        return $user;
+        return User::create($data);
     }
 }

@@ -26,6 +26,16 @@ class User extends Authenticatable
         'id'
     ];
 
+    public static function create(array $attributes = []) {
+        $user = new self;
+        $user->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
+        $user->name = $attributes['name'];
+        $user->email = $attributes['email'];
+        $user->password = bcrypt($attributes['password']);
+        $user->save();
+        return $user;
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

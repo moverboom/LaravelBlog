@@ -45,6 +45,16 @@ class Post extends Model
         $post->save();
         return $post;
     }
+    
+    public function update(array $attributes = [], array $options = []) {
+        if(!$this->exists) {
+            return false;
+        }
+        $this->title = $attributes['title'];
+        $this->content = $attributes['content'];
+        $this->slug = str_slug($attributes['title']);
+        return $this->save();
+    }
 
     public function getAuthor() {
         return $this->belongsTo('App\User', 'author_id', 'id');
