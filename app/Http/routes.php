@@ -55,9 +55,16 @@ Route::group(['middleware' => ['web']], function() {
     //create comment
     Route::post('/comment/create/{post}', ['as' => 'comment/create', 'uses' => 'CommentController@store']);
 
+    //update comment
+    Route::post('/comment/update/{comment}', ['as' => 'comment/update', 'uses' => 'CommentController@update']);
+
     //delete comment
     Route::get('/comment/destroy/{id}', 'CommentController@destroy');
 
     //Route used for testing new features
-    Route::get('testmd', function() { echo Markdown::string('#test'); });
+    Route::get('test', function() { dd(Auth::id(), \App\Post::first()->hasLikeFromUser(Auth::id()), \App\Post::first()->getAuthor()); });
+
+    //Like a post
+    Route::post('/post/like/{post}', ['as' => 'post/like', 'uses' => 'LikeController@like']);
+
 });

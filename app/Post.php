@@ -23,7 +23,7 @@ class Post extends Model
      * @var array
      */
     protected $guarded = [
-        'id'
+        'id', 'author_id'
     ];
 
     /**
@@ -45,7 +45,14 @@ class Post extends Model
         $post->save();
         return $post;
     }
-    
+
+    /**
+     * Updates a Post using the given attributes
+     *
+     * @param array $attributes
+     * @param array $options
+     * @return bool
+     */
     public function update(array $attributes = [], array $options = []) {
         if(!$this->exists) {
             return false;
@@ -56,11 +63,45 @@ class Post extends Model
         return $this->save();
     }
 
+    /**
+     * Returns the Author
+     *
+     * @return User
+     */
     public function getAuthor() {
         return $this->belongsTo('App\User', 'author_id', 'id');
     }
 
+    /**
+     * Returns all the comments on the post
+     *
+     * @return array with comments
+     */
     public function getComments() {
         return $this->hasMany('App\Comment', 'on_post', 'id');
+    }
+
+    /**
+     * Returns all the likes on this post
+     *
+     * @return array with likes
+     */
+    public function getLikes() {
+        return $this->hasMany('App\Like', 'post_id', 'id');
+    }
+
+    /**
+     * Retuns a boolean to indicate if a user has liked this post
+     *
+     * @param $userid
+     * @return bool
+     */
+    public function hasLikeFromUser($userid) {
+        foreach ($this->getLikes as $like) {
+            if($like->getUser->id == $userid) {
+                return true;
+            }
+        }
+        return false;
     }
 }

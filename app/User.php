@@ -14,7 +14,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email',
     ];
 
     /**
@@ -23,9 +23,25 @@ class User extends Authenticatable
      * @var array
      */
     protected $guarded = [
-        'id'
+        'id', 'password'
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'id', 'password', 'remember_token'
+    ];
+
+
+    /**
+     * Creates a new User and saves it in the database
+     *
+     * @param array $attributes
+     * @return User
+     */
     public static function create(array $attributes = []) {
         $user = new self;
         $user->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
@@ -37,19 +53,29 @@ class User extends Authenticatable
     }
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Returns all user's Posts
      *
-     * @var array
+     * @return array with Posts
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
     public function getPosts() {
         return $this->hasMany('App\Post', 'author_id', 'id');
     }
 
+    /**
+     * Returns all user's Comments
+     *
+     * @return array with Comments
+     */
     public function getComments() {
         return $this->hasMany('App\Comment', 'from_user', 'id');
+    }
+
+    /**
+     * Returns all user's Likes
+     *
+     * @return array with Likes
+     */
+    public function getLikes() {
+        return $this->hasMany('App\Like', 'user_id', 'id');
     }
 }

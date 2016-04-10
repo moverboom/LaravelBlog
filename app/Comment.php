@@ -18,6 +18,13 @@ class Comment extends Model
     ];
 
     /**
+     * The attributes which are not mass assignable
+     *
+     * @var array
+     */
+    protected $guarded = ['id', 'from_user', 'on_post'];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array

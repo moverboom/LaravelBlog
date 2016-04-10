@@ -12,5 +12,5 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.phpUnit();
+    mix.phpUnit().scripts(['comment.js']).version('js/all.js');
 });

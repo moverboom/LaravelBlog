@@ -38,8 +38,14 @@ class CommentController extends Controller
      * NOT IMPLEMENTED YET
      *
      * @param CreateCommentRequest $request
+     * @param Comment $comment
+     * @return
      */
-    public function update(CreateCommentRequest $request) {
+    public function update(Request $request, Comment $comment) {
+        if($comment->exists && $comment->from_user == Auth::id()) {
+            $comment->content = $request->input('content');
+            $comment->save();
+        }
         return redirect()->back();
     }
 

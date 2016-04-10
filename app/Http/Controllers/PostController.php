@@ -14,7 +14,11 @@ class PostController extends Controller
 {
     private $MESSAGE_ERROR_PERMISSIONS = "You don't have the required permissions";
 
-    //user must be logged in to see any posts
+	/**
+	 * User must be authorized to use any of these methods
+	 *
+	 * PostController constructor.
+	 */
 	public function __construct()
 	{
 		//redirect to login page
@@ -52,7 +56,7 @@ class PostController extends Controller
 	public function store(CreatePostRequest $request) {
         $request['author_id'] = Auth::id();
 		$post = Post::create($request->all());
-		return view('posts.show')->with('post', $post)->with('message-success', 'Post created successfully');
+		return redirect('/post/'.$post->slug)->with('message-success', 'Post created successfully');
 	}
 
     /**
@@ -81,7 +85,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post) {
         if ($post->getAuthor->id == Auth::id()) {
             $post->update($request->all());
-            return view('posts.show')->with('post', $post)->with('message-success', 'Post updated successfully');
+            return redirect('/post/'.$post->slug)->with('message-success', 'Post updated successfully');
         }
         return redirect('/')->with('message', $this->MESSAGE_ERROR_PERMISSIONS);
     }

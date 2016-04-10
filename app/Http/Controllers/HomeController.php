@@ -9,6 +9,7 @@ class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
+     * User must be authorized to see the dashboard
      *
      * @return void
      */
