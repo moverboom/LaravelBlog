@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -67,7 +68,7 @@ class UserController extends Controller
     public function getUserPosts($userid) {
 		$user = User::find($userid);
         if(!empty($user)) {
-            return view('home')->with('posts', $user->getPosts)->with('user', $user);
+            return view('home')->with('posts', User::getPaginatedPosts($userid))->with('user', $user);
         }
     }
 

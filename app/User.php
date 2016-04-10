@@ -61,6 +61,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Post', 'author_id', 'id');
     }
 
+    public static function getPaginatedPosts($userId) {
+        return Post::where('author_id', '=', $userId)->paginate(15);
+    }
+
     /**
      * Returns all user's Comments
      *
