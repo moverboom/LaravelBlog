@@ -70,9 +70,8 @@ class PostController extends Controller
 		$post = Post::find($id);
 		if(!empty($post) && Auth::user()->id == $post->author_id) {
 			return view('posts.edit')->with('post', $post);
-		} else {
-			return redirect('/')->with('message', $this->MESSAGE_ERROR_PERMISSIONS);
 		}
+		return redirect('/')->with('message', $this->MESSAGE_ERROR_PERMISSIONS);
 	}
 
     /**

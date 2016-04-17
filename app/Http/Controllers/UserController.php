@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 class UserController extends Controller
@@ -21,41 +19,47 @@ class UserController extends Controller
 	}
 
     /**
-    *
-    *Show users' details
+    * Show user's details
     *
     *@param userid as Base64 identifier
     *@return view with user details
     */
     public function profile($userid) {
-    	$user = User::find($userid);
-    	if(empty($user)) {
-            return redirect('home')->with('message', 'User not found');
-    	} else if(Auth::id() == $userid) {
+    	$user = $this->getUserOrFail($userid);
+		if($this->isRequestedUserAuthenticatedUser($user)) {
     		return view('user.edit')->with('user', $user);
     	} else if(Auth::check()) {
     		return view('user.profile')->with('user', $user);
     	}
     }
 
+	/**
+	 * Checks if the given User is the same user as the currently
+	 * authenticated User
+	 *
+	 * @param User $user
+	 * @return bool true is equal
+	 */
+	private function isRequestedUserAuthenticatedUser(User $user) {
+		if(Auth::id() === $user->id) {
+			return true;
+		}
+		return false;
+	}
+
     /**
+    * Update details
     *
-    *Update details
-    *
-    *@param $user user model
-     * @param $request request
-    *@return view with user details
+    *  @param $user user model
+	 * @param $request request
+    *  @return view with user details
     */
     public function update(Request $request, User $user) {
-    	if(!empty($user) && $user->id == Auth::id()) {
-			$user->update([
-				$request->input('name'),
-				$request->input('email')
-			]);
+    	if($user->exists && $user->id == Auth::id()) {
+			$user->update($request->all());
     		return redirect()->back()->with('user', $user);
-    	} else {
-    		return redirect('/')->with('message', 'You don\'t have the required permissions');
     	}
+		return redirect('/')->with('message', 'You don\'t have the required permissions');
     }
 
 	/**
@@ -66,23 +70,30 @@ class UserController extends Controller
 	 *@return view with user details
 	 */
     public function getUserPosts($userid) {
-		$user = User::find($userid);
-        if(!empty($user)) {
-            return view('home')->with('posts', User::getPaginatedPosts($userid))->with('user', $user);
-        }
+		return view('home')->with('posts', User::getPaginatedPosts($userid))->with('user', $this->getUserOrFail($userid));
     }
 
 	/**
 	 *
-	 *Show user comments
+	 * Show user comments
 	 *
-	 *@param $userid as Base64 identifier
-	 *@return view with user details
+	 * @param $userid as Base64 identifier
+	 * @return view with user details
 	 */
     public function getUserComments($userid) {
-		$user = User::find($userid);
-        if(!empty($user)) {
-            return view('user.comments')->with('user', $user);
-        }
+		return view('user.comments')->with('user', $this->getUserOrFail($userid));
     }
+
+	/**
+	 * Returns a user object for the given userid of throws an exception
+	 * ModelNotFoundExceptions are automatically caught by Exceptions/Handler
+	 * It redirects back when the exception is thrown
+	 *
+	 * @param $userid User to find
+	 * @throws ModelNotFoundException When user not found
+	 * @return User object
+	 */
+	private function getUserOrFail($userid) {
+		return User::findOrFail($userid);
+	}
 }

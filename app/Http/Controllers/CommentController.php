@@ -43,8 +43,9 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment) {
         if($comment->exists && $comment->from_user == Auth::id()) {
-            $comment->content = $request->input('content');
-            $comment->save();
+            //$comment->content = $request->input('content');
+            //$comment->save();
+            $comment->update($request->all());
         }
         return redirect()->back();
     }
