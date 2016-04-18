@@ -21,7 +21,6 @@ class Posts extends Migration
             $table->string('title')->unique();
             $table->text('content');
             $table->string('slug')->unique();
-            $table->boolean('active');
             $table->timestamps();
         });
     }

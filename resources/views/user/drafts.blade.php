@@ -24,11 +24,11 @@
                             @foreach($user->getPaginatedDrafts()->all() as $post)
                                 <ul class="list-group">
                                     <li class="list-group-item lead">
-                                        <a href="{{ url('/post/edit-draft/'.$post->id) }}" alt="Edit Post">{{ html_entity_decode($post->title) }}</a>
+                                        <a href="{{ url('/draft/edit/'.$post->id) }}" alt="Edit Post">{{ html_entity_decode($post->title) }}</a>
                                         @if(Auth::check() && $post->author_id == Auth::user()->id)
                                             <div class="pull-right" style="margin-right: 10px;">
-                                                <a href="{{ url('/post/edit-draft/'.$post->id) }}" class="btn btn-default btn-sm">Edit</a>
-                                                <a href="{{ url('/post/destroy/'.$post->id) }}" class="btn btn-default btn-sm">Delete</a>
+                                                <a href="{{ url('/draft/edit/'.$post->id) }}" class="btn btn-default btn-sm">Edit</a>
+                                                <a href="{{ url('/draft/destroy/'.$post->id) }}" class="btn btn-default btn-sm">Delete</a>
                                             </div>
                                         @endif
                                     </li>

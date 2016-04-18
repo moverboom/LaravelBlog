@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\Post\Post;
+use App\Models\Post\Draft;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -58,7 +60,7 @@ class User extends Authenticatable
      * @return array with Posts
      */
     public function getPosts() {
-        return $this->hasMany('App\Post', 'author_id', 'id');
+        return $this->hasMany('App\Models\Post\Post', 'author_id', 'id');
     }
 
     /**
@@ -68,11 +70,11 @@ class User extends Authenticatable
      * @return mixed
      */
     public function getPaginatedPosts() {
-        return Post::where('author_id', '=', $this->id)->where('active', '=', Post::POSTED)->paginate(15);
+        return Post::where('author_id', '=', $this->id)->paginate(15);
     }
 
     public function getPaginatedDrafts() {
-        return Post::where('author_id', '=', $this->id)->where('active', '=', Post::DRAFT)->paginate(15);
+        return Draft::where('author_id', '=', $this->id)->paginate(15);
     }
 
     /**
@@ -81,7 +83,7 @@ class User extends Authenticatable
      * @return array with Comments
      */
     public function getComments() {
-        return $this->hasMany('App\Comment', 'from_user', 'id');
+        return $this->hasMany('App\Models\Comment', 'from_user', 'id');
     }
 
     /**
@@ -90,6 +92,6 @@ class User extends Authenticatable
      * @return array with Likes
      */
     public function getLikes() {
-        return $this->hasMany('App\Like', 'user_id', 'id');
+        return $this->hasMany('App\Models\Like', 'user_id', 'id');
     }
 }

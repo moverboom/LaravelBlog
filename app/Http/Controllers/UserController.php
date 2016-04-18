@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,10 +40,7 @@ class UserController extends Controller
 	 * @return bool true is equal
 	 */
 	private function isRequestedUserAuthenticatedUser(User $user) {
-		if(Auth::id() === $user->id) {
-			return true;
-		}
-		return false;
+		return Auth::id() == $user->id;
 	}
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,10 +51,10 @@ class Comment extends Model
     }
 
     public function getUser() {
-        return $this->belongsTo('App\User', 'from_user', 'id');
+        return $this->belongsTo('App\Models\User', 'from_user', 'id');
     }
 
     public function getPost() {
-        return $this->belongsTo('App\Post', 'on_post', 'id');
+        return $this->belongsTo('App\Models\Post', 'on_post', 'id');
     }
 }

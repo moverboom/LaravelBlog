@@ -20,7 +20,6 @@ class Drafts extends Migration
                 ->onDelete('cascade');
             $table->string('title')->unique();
             $table->text('content');
-            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

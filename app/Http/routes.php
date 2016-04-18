@@ -48,17 +48,14 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/post/create', 'PostController@create');
 
     //create a new post
-    Route::post('/post/create', ['as' => 'post/create', 'uses' => 'PostController@store']);
-
-    //Publish a draft
-    Route::post('/post/publish-draft/{post}', ['as' => 'publish-draft', 'uses' => 'PostController@publishDraft']);
+    Route::post('/post/create', function(App\Http\Requests\CreatePostRequest $request) {
+        if($request->input('action') == 'Save')
+            return \App::make('App\Http\Controllers\DraftController')->store($request);
+        return \App::make('App\Http\Controllers\PostController')->store($request);
+    });
 
     //edit post
     Route::get('/post/edit/{id}', 'PostController@edit');
-
-    //edit draft
-    Route::get('/post/edit-draft/{id}', 'PostController@edit');
-
     Route::post('/post/edit/{post}', ['as' => 'post/update', 'uses' => 'PostController@update']);
 
     //Destroy post
@@ -67,8 +64,16 @@ Route::group(['middleware' => ['web']], function() {
     //show post
     Route::get('/post/{slug}', 'PostController@show');
 
+    Route::get('/draft/edit/{id}', 'DraftController@edit');
 
+    Route::post('/draft/edit/{draft}', function(App\Http\Requests\CreatePostRequest $request, App\Models\Post\Draft $draft) {
+        if($request->input('action') == 'Publish')
+            return \App::make('App\Http\Controllers\DraftController')->publish($request, $draft);
+        return \App::make('App\Http\Controllers\DraftController')->update($request, $draft);
+    });
 
+    //Destroy draft
+    Route::get('/draft/destroy/{id}', 'DraftController@destroy');
 
 
 
@@ -81,9 +86,6 @@ Route::group(['middleware' => ['web']], function() {
 
     //delete comment
     Route::get('/comment/destroy/{id}', 'CommentController@destroy');
-
-    //Route used for testing new features
-    Route::get('test', function() { dd(Auth::id(), \App\Post::first()->hasLikeFromUser(Auth::id()), \App\Post::first()->getAuthor()); });
 
     //Like a post
     Route::post('/post/like/{post}', ['as' => 'post/like', 'uses' => 'LikeController@like']);

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use App\Http\Requests;
+use App\Models\Post\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreatePostRequest as CreatePostRequest;
@@ -16,7 +16,7 @@ class PostController extends Controller
 	/**
 	 * User must be authorized to use any of these methods
 	 *
-	 * PostController constructor.
+	 * PublishedController constructor.
 	 */
 	public function __construct()
 	{
@@ -25,13 +25,13 @@ class PostController extends Controller
 	}
 
 	/**
-	 * Index view with paginated posts
-	 * Posts are ordered by creation date and paginated by 10
+	 * Index view with paginated published posts
+	 * Puhlished posts are ordered by creation date and paginated by 10
 	 *
 	 * @return home with posts array
 	 */
 	public function index() {
-		$posts = Post::where('active', 1)->orderBy('created_at', 'desc')->paginate(15);
+		$posts = Post::orderBy('created_at', 'desc')->paginate(15);
 		return view('home')->with('posts', $posts);
 	}
 
@@ -53,48 +53,10 @@ class PostController extends Controller
 	 * @return posts.show which shows the created post with confirm message
 	 */
 	public function store(CreatePostRequest $request) {
-        if($request->input('action') == 'Post') {
-            return $this->publish($request->all());
-        } else if ($request->input('action') == 'Save') {
-            return $this->draft($request->all());
-        }
+		$request['author_id'] = Auth::id();
+		$post = Post::create($request->all());
+		return redirect('/post/'.$post->slug)->with('message-success', 'Post created successfully');
 	}
-
-    /**
-     * Publishes a Post
-     *
-     * @param array $data
-     * @return mixed
-     */
-    private function publish(array $data) {
-        $data['author_id'] = Auth::id();
-        $post = Post::create($data);
-        return redirect('/post/'.$post->slug)->with('message-success', 'Post created successfully');
-    }
-
-    /**
-     * Saves a Post as draft
-     *
-     * @param array $data
-     */
-    private function draft(array $data) {
-        $data['author_id'] = Auth::id();
-        Post::draft($data);
-        return redirect()->action('UserController@getUserDrafts', [Auth::id()]);
-    }
-
-    /**
-     * Publishes a draft
-     *
-     * @param Request $request
-     * @param Post $post draft from database
-     */
-    public function publishDraft(Request $request, Post $post) {
-        if($post->exists && $post->active == 0) {
-            $request['active'] = Post::POSTED;
-            $this->update($request, $post);
-        }
-    }
 
     /**
      * Return the view to edit a post
@@ -106,11 +68,7 @@ class PostController extends Controller
 	public function edit($id) {
 		$post = Post::find($id);
 		if(!empty($post) && Auth::user()->id == $post->author_id) {
-            if($post->active == 1) {
-                return view('posts.edit')->with('post', $post);
-            } else if ($post->active == 0) {
-                return view('posts.draft')->with('post', $post);
-            }
+			return view('posts.edit')->with('post', $post);
 		}
 		return redirect('/')->with('message', $this->MESSAGE_ERROR_PERMISSIONS);
 	}
@@ -153,7 +111,7 @@ class PostController extends Controller
      */
 	public function destroy($id) {
 		$post = Post::find($id);
-		if(!empty($post)) {
+		if($post->exists) {
 			if($post->author_id == Auth::id()) {
 				$post->delete();
 				return redirect('home')->with('message-success', 'Post removed successfully');

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Like;
-use App\Post;
+use App\Models\Like;
 use App\Http\Requests;
+use App\Models\Post\Post;
 use Illuminate\Http\Request;
 
 

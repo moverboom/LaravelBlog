@@ -16,10 +16,12 @@ class AddLikesTable extends Migration
             $table->increments('id');
             $table->string('user_id', 11);
             $table->foreign('user_id')
-                ->references('id')->on('users');
+                ->references('id')->on('users')
+                ->onDelete('cascade');
             $table->string('post_id', 11);
             $table->foreign('post_id')
-                ->references('id')->on('posts');
+                ->references('id')->on('posts')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,7 +34,7 @@ class Like extends Model
      * @return User
      */
     public function getUser() {
-        return $this->belongsTo('App\User', 'user_id', 'id');
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     /**
@@ -43,6 +43,6 @@ class Like extends Model
      * @return Post
      */
     public function getPost() {
-        return $this->belongsTo('App\Post', 'post_id', 'id');
+        return $this->belongsTo('App\Models\Post\Post', 'post_id', 'id');
     }
 }

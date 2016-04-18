@@ -20,17 +20,17 @@
                                 @endforeach
                             </ul>
                         @endif
-                        {!! Form::model($post, array('route' => array('publish-draft', $post), 'method' => 'POST', 'role' => 'form' )) !!}
+                        {!! Form::model($draft, array('url' => array('draft/edit', $draft), 'method' => 'POST', 'role' => 'form' )) !!}
                         {!! csrf_field() !!}
                         <div class="form-group">
                             {!! Form::label('title', 'Title', array('for' => 'title')) !!}
-                            {!! Form::text('title', $post->title, $attributes = array('class' => 'form-control', 'placeholder' => 'Title')) !!}
+                            {!! Form::text('title', $draft->title, $attributes = array('class' => 'form-control', 'placeholder' => 'Title')) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('content', 'Content', array('for' => 'content')) !!}
-                            {!! Form::textarea('content', $post->content, $attributes = array('class' => 'form-control', 'rows' => '10', 'cols' => '5', 'placeholder' => 'Write something beautiful!')) !!}
+                            {!! Form::textarea('content', $draft->content, $attributes = array('class' => 'form-control', 'rows' => '10', 'cols' => '5', 'placeholder' => 'Write something beautiful!')) !!}
                         </div>
-                            {!! Form::submit('Post', array('class' => 'btn btn-info', 'type' => 'submit', 'name' => 'action')) !!}
+                            {!! Form::submit('Publish', array('class' => 'btn btn-info', 'type' => 'submit', 'name' => 'action')) !!}
                             {!! Form::submit('Save', array('class' => 'btn btn-default', 'type' => 'submit', 'name' => 'action')) !!}
                         {!! Form::close() !!}
                     </div>

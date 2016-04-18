@@ -1,13 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models\Post;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    const POSTED = 1;
-    const DRAFT = 0;
     public $incrementing = false;
     
     /**
@@ -35,42 +33,17 @@ class Post extends Model
      * @param array $attributes
      * @return Post
      */
-    public static function create(array $attributes = [])
-    {
-        $post = Post::newPostObject($attributes);
-        $post->save();
-        return $post;
-    }
-
-    /**
-     * Creates a new Post and saves it as draft
-     *
-     * @param array $attributes
-     * @return Post
-     */
-    public static function draft(array $attributes = []) {
-        $post = Post::newPostObject($attributes);
-        $post->active = Post::DRAFT;
-        $post->save();
-        return $post;
-    }
-
-    /**
-     * Creates a new Post object
-     *
-     * @param array $attributes
-     * @return Post
-     */
-    public static function newPostObject(array $attributes = []) {
+    public static function create(array $attributes = []) {
         $post = new self();
         $post->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
         $post->title = $attributes['title'];
         $post->content = $attributes['content'];
-        $post->slug = str_slug($attributes['title']);
         $post->author_id = $attributes['author_id'];
-        $post->active = Post::POSTED;
+        $post->slug = str_slug($attributes['title']);
+        $post->save();
         return $post;
     }
+
 
     /**
      * Updates a Post using the given attributes
@@ -95,7 +68,7 @@ class Post extends Model
      * @return User
      */
     public function getAuthor() {
-        return $this->belongsTo('App\User', 'author_id', 'id');
+        return $this->belongsTo('App\Models\User', 'author_id', 'id');
     }
 
     /**
@@ -104,7 +77,7 @@ class Post extends Model
      * @return array with comments
      */
     public function getComments() {
-        return $this->hasMany('App\Comment', 'on_post', 'id');
+        return $this->hasMany('App\Models\Comment', 'on_post', 'id');
     }
 
     /**
@@ -113,7 +86,7 @@ class Post extends Model
      * @return array with likes
      */
     public function getLikes() {
-        return $this->hasMany('App\Like', 'post_id', 'id');
+        return $this->hasMany('App\Models\Like', 'post_id', 'id');
     }
 
     /**
@@ -130,4 +103,5 @@ class Post extends Model
         }
         return false;
     }
+
 }
