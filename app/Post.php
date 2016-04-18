@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    const POSTED = 1;
+    const DRAFT = 0;
     public $incrementing = false;
     
     /**
@@ -14,7 +16,7 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'slug', 'active', 'created_at', 'update_at'
+        'title', 'content', 'slug', 'active'
     ];
 
     /**
@@ -23,11 +25,11 @@ class Post extends Model
      * @var array
      */
     protected $guarded = [
-        'id', 'author_id'
+        'id', 'author_id', 'created_at', 'update_at'
     ];
 
     /**
-     * Creates a new Post
+     * Creates a new Post and saves it
      * Overwrites the default Eloquent create method
      *
      * @param array $attributes
@@ -35,14 +37,38 @@ class Post extends Model
      */
     public static function create(array $attributes = [])
     {
+        $post = Post::newPostObject($attributes);
+        $post->save();
+        return $post;
+    }
+
+    /**
+     * Creates a new Post and saves it as draft
+     *
+     * @param array $attributes
+     * @return Post
+     */
+    public static function draft(array $attributes = []) {
+        $post = Post::newPostObject($attributes);
+        $post->active = Post::DRAFT;
+        $post->save();
+        return $post;
+    }
+
+    /**
+     * Creates a new Post object
+     *
+     * @param array $attributes
+     * @return Post
+     */
+    public static function newPostObject(array $attributes = []) {
         $post = new self();
         $post->id = substr(base64_encode(sha1(mt_rand())), 0, 11);
         $post->title = $attributes['title'];
         $post->content = $attributes['content'];
         $post->slug = str_slug($attributes['title']);
         $post->author_id = $attributes['author_id'];
-        $post->active = 1; //IMPLEMENT DRAFT FUNCTIONALITY LATER
-        $post->save();
+        $post->active = Post::POSTED;
         return $post;
     }
 

@@ -27,15 +27,13 @@ class LikeController extends Controller
      * @return redirect back
      */
     public function like(Post $post) {
-        if($post->exists) {
-            if(! Like::where('post_id', '=', $post->id)->where('user_id', '=', Auth::id())->exists()) {
-                Like::create([
-                    'post_id' => $post->id,
-                    'user_id' => Auth::id()
-                ]);
-            } else {
-                $this->unlike($post);
-            }
+        if(! Like::where('post_id', '=', $post->id)->where('user_id', '=', Auth::id())->exists()) {
+            Like::create([
+                'post_id' => $post->id,
+                'user_id' => Auth::id()
+            ]);
+        } else {
+            $this->unlike($post);
         }
         return redirect()->back();
     }

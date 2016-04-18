@@ -29,8 +29,8 @@
 						<div class="form-group">
 						    {!! Form::label('content', 'Content', array('for' => 'content')) !!}
                             {!! Form::textarea('content', $post->content, $attributes = array('class' => 'form-control', 'rows' => '10', 'cols' => '5', 'placeholder' => 'Write something beautiful!')) !!}
-						</div> 
-                        {!! Form::submit('Post', array('class' => 'btn btn-info', 'type' => 'submit')) !!}
+						</div>
+                        {!! Form::submit('Post', array('class' => 'btn btn-info', 'type' => 'submit', 'name' => 'action')) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

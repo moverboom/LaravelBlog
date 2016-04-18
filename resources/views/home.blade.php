@@ -7,25 +7,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        @if(!empty($user))
-                            <div class="pull-left" style="margin-left: 10px;">
-                                <p class="lead">{{$user->name}}</p>
-                                <p>Posts</p>
+                        <div class="pull-left" style="margin-left: 10px;">
+                            <p class="lead">Dashboard</p>
+                        </div>
+                        @if(Auth::check())
+                            <div class="pull-right" style="margin-right: 10px;">
+                                <a href="{{ url('/post/create') }}" class="btn btn-info">Create Post</a>
                             </div>
-                            @if(Auth::check() && Auth::user()->id == $user->id)
-                                <div class="pull-right" style="margin-right: 10px;">
-                                    <a href="{{ url('/post/create') }}" class="btn btn-info">Create Post</a>
-                                </div>
-                            @endif
-                        @else
-                            <div class="pull-left" style="margin-left: 10px;">
-                                <p class="lead">Dashboard</p>
-                            </div>
-                            @if(Auth::check())
-                                <div class="pull-right" style="margin-right: 10px;">
-                                    <a href="{{ url('/post/create') }}" class="btn btn-info">Create Post</a>
-                                </div>
-                            @endif
                         @endif
                     </div>
                 </div>
