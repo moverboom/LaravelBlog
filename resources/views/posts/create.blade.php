@@ -31,7 +31,8 @@
 						    {!! Form::label('content', 'Content', array('for' => 'content')) !!}
                             {!! Form::textarea('content', '', array('class' => 'form-control', 'id' => 'content', 'rows' => '4', 'cols' => '5', 'placeholder' => 'Write something beautiful!')) !!}
 						</div> 
-                        {!! Form::submit('Post', array('class' => 'btn btn-info', 'type' => 'submit')) !!}
+                        {!! Form::submit('Post', array('class' => 'btn btn-info', 'type' => 'submit', 'name' => 'action')) !!}
+                        {!! Form::submit('Save', array('class' => 'btn btn-default', 'type' => 'submit', 'name' => 'action')) !!}
                     {!! Form::close() !!}
                 </div>
             </div>

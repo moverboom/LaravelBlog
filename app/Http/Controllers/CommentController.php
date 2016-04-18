@@ -7,7 +7,6 @@ Use App\Comment;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\CreateCommentRequest;
 
 
 class CommentController extends Controller
@@ -20,7 +19,7 @@ class CommentController extends Controller
     }
 
     /**
-     * stores a new comment
+     * Stores a new comment
      *
      * @param Request $request submitted data
      * @param Post $post Post to comment on
@@ -35,16 +34,13 @@ class CommentController extends Controller
 
     /**
      * Updates a comment
-     * NOT IMPLEMENTED YET
      *
-     * @param CreateCommentRequest $request
+     * @param Request $request
      * @param Comment $comment
      * @return
      */
     public function update(Request $request, Comment $comment) {
         if($comment->exists && $comment->from_user == Auth::id()) {
-            //$comment->content = $request->input('content');
-            //$comment->save();
             $comment->update($request->all());
         }
         return redirect()->back();

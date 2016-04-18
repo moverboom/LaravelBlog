@@ -27,10 +27,9 @@ class UserController extends Controller
     public function profile($userid) {
     	$user = $this->getUserOrFail($userid);
 		if($this->isRequestedUserAuthenticatedUser($user)) {
-    		return view('user.edit')->with('user', $user);
-    	} else if(Auth::check()) {
-    		return view('user.profile')->with('user', $user);
-    	}
+            return view('user.edit')->with('user', $user);
+        }
+    	return view('user.profile')->with('user', $user);
     }
 
 	/**
@@ -63,14 +62,25 @@ class UserController extends Controller
     }
 
 	/**
-	 *
 	 *Show user posts
 	 *
 	 *@param $userid as Base64 identifier
-	 *@return view with user details
+	 *@return view with posts
 	 */
     public function getUserPosts($userid) {
-		return view('home')->with('posts', User::getPaginatedPosts($userid))->with('user', $this->getUserOrFail($userid));
+        $user = $this->getUserOrFail($userid);
+		return view('user.posts')->with('user', $user);
+    }
+
+    /**
+     * Shows user drafts
+     *
+     * @param $userid as Base64 identifier
+     * @return view with drafts
+     */
+    public function getUserDrafts($userid) {
+        $user = $this->getUserOrFail($userid);
+        return view('user.drafts')->with('user', $user);
     }
 
 	/**
@@ -78,7 +88,7 @@ class UserController extends Controller
 	 * Show user comments
 	 *
 	 * @param $userid as Base64 identifier
-	 * @return view with user details
+	 * @return view with comments
 	 */
     public function getUserComments($userid) {
 		return view('user.comments')->with('user', $this->getUserOrFail($userid));

@@ -61,8 +61,18 @@ class User extends Authenticatable
         return $this->hasMany('App\Post', 'author_id', 'id');
     }
 
-    public static function getPaginatedPosts($userId) {
-        return Post::where('author_id', '=', $userId)->paginate(15);
+    /**
+     * Returns all user's Posts with pagination
+     *
+     * @param $userId
+     * @return mixed
+     */
+    public function getPaginatedPosts() {
+        return Post::where('author_id', '=', $this->id)->where('active', '=', Post::POSTED)->paginate(15);
+    }
+
+    public function getPaginatedDrafts() {
+        return Post::where('author_id', '=', $this->id)->where('active', '=', Post::DRAFT)->paginate(15);
     }
 
     /**
